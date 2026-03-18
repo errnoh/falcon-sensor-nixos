@@ -6,6 +6,7 @@
   zlib,
   openssl,
   libnl,
+  src ? throw "You must provide the CrowdStrike .deb file path",
   ...
 }:
 
@@ -29,7 +30,7 @@ stdenv.mkDerivation rec {
     ${dpkg}/bin/dpkg-deb -f ${src} version | tr -d "\n"
   '';
   arch = "x86_64-linux";
-  src = ./falcon-sensor_7.30.0-18306_amd64.deb;
+  inherit src;
 
   nativeBuildInputs = [
     autoPatchelfHook
