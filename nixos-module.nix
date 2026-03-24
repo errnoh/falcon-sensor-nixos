@@ -6,6 +6,13 @@
 }:
 with lib; let
   cfg = config.services.falcon-sensor;
+  customFalconUnwrapped = pkgs.falcon-sensor-unwrapped.override {
+    debFile = cfg.debFile;
+    version = cfg.version;
+  };
+  customFalcon = pkgs.falcon-sensor.override {
+    falcon-sensor-unwrapped = customFalconUnwrapped;
+  };
 in {
   options = {
     services.falcon-sensor = {
@@ -20,7 +27,7 @@ in {
         type = types.str;
         description = "Customer ID (CID) for your Crowdstrike Falcon Sensor.";
       };
-      src = mkOption {
+      debFile = mkOption {
         type = types.nullOr types.path;
         default = null;
         description = "Path to the Crowdstrike .deb file";
@@ -42,7 +49,7 @@ in {
         ];
 
         environment.systemPackages = [
-          pkgs.falcon-sensor
+          customFalcon
         ];
 
         systemd = {
@@ -74,7 +81,7 @@ in {
                   ''
                     #!${pkgs.bash}/bin/bash
                     set -euo
-                    ln -sf ${pkgs.falcon-sensor-unwrapped}/opt/CrowdStrike/* /opt/CrowdStrike/
+                    ln -sf ${customFalconUnwrapped}/opt/CrowdStrike/* /opt/CrowdStrike/
                     /run/current-system/sw/bin/falconctl -s --trace=debug
                     # Replace <cid> with your CID
                     /run/current-system/sw/bin/falconctl -s --cid="${cfg.cid}" -f

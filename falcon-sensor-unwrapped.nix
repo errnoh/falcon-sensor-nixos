@@ -6,14 +6,15 @@
   zlib,
   openssl,
   libnl,
-  src ? throw "You must provide the CrowdStrike .deb file path",
+  debFile ? throw "You must provide the CrowdStrike .deb file path",
   version ? "unknown",
   ...
 }:
 stdenv.mkDerivation {
   pname = "falcon-sensor-unwrapped";
   arch = "x86_64-linux";
-  inherit src version;
+  src = debFile;
+  inherit version;
 
   nativeBuildInputs = [
     autoPatchelfHook
