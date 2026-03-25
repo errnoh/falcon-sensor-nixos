@@ -40,7 +40,7 @@ And enable it in your `configuration.nix`:
   services.falcon-sensor = rec {
     enable = true;
     # cid = "YOUR_CUSTOMER_ID_HERE"; - not recommended, use cidFile
-    cidFile = sops.secrets."falcon-sensor/cid".path; # pass a sops are agenix secret path here
+    cidFile = sops.secrets."falcon-sensor/cid".path; # pass a sops or agenix secret path here
     # pass your downloaded falcon-sensor deb path here, along with the version
     debFile = "./binaries/falcon-sensor_${version}_amd64.deb";
     version = "7.33.0-18606";
