@@ -6,7 +6,7 @@
 }: let
   falconFHSWrapper = mainProgram: buildFHSEnv {
     name = mainProgram;
-    targetPkgs = pkgs: with pkgs; [libnl openssl];
+    targetPkgs = pkgs: with pkgs; [libnl openssl zlib];
     runScript = "${falcon-sensor-unwrapped}/opt/CrowdStrike/${mainProgram}";
   };
 
