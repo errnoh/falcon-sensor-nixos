@@ -21,7 +21,7 @@ Then add the flake to your system's `flake.nix`:
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
-          falcon-sensor.nixosModules.falcon-sensor
+          falcon-sensor.nixosModules.default
         ];
       };
     };
@@ -37,9 +37,13 @@ And enable it in your `configuration.nix`:
 {
   # ...
   
-  services.falcon-sensor = {
+  services.falcon-sensor = rec {
     enable = true;
-    cid = "YOUR_CUSTOMER_ID_HERE";
+    # cid = "YOUR_CUSTOMER_ID_HERE"; - not recommended, use cidFile
+    cidFile = sops.secrets."falcon-sensor/cid".path; # pass a sops are agenix secret path here
+    # pass your downloaded falcon-sensor deb path here, along with the version
+    debFile = "./binaries/falcon-sensor_${version}_amd64.deb";
+    version = "7.33.0-18606";
     # If you don't do this, the module will override boot.kernelPackages
     # which may or may not work for you.
     kernelPackages = null;
