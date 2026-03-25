@@ -45,7 +45,7 @@ in {
       };
       logLevel = mkOption {
         type = types.enum [ "none" "err" "warn" "info" "debug" ];
-        default = "warn";
+        default = "none";
         description = "falcon-sensor logging level";
       };
     };
