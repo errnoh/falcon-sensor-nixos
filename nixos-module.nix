@@ -111,7 +111,14 @@ in {
                       CID_VALUE="${cfg.cid}"
                     ''}
 
-                    ln -sf ${customFalconUnwrapped}/opt/CrowdStrike/* /opt/CrowdStrike/
+                    # looks like at least the ASPM and Falcon4IT directories are
+                    # being deleted and recreated as real dirs.
+                    # This tries to remedy that issue by looping all files and failing silently
+                    for item in ${customFalconUnwrapped}/opt/CrowdStrike/*; do
+                      target="/opt/CrowdStrike/$(basename "$item")"
+                      ln -sfT "$item" "$target" 2>/dev/null || true
+                    done
+
                     /run/current-system/sw/bin/falconctl -s --trace=${cfg.logLevel}
                     /run/current-system/sw/bin/falconctl -s -f --cid="$CID_VALUE"
                     /run/current-system/sw/bin/falconctl -g --cid
