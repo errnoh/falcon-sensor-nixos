@@ -119,9 +119,9 @@ in {
                       ln -sfT "$item" "$target" 2>/dev/null || true
                     done
 
-                    ${customFalconUnwrapped}/opt/CrowdStrike/falconctl -s --trace=${cfg.logLevel}
-                    ${customFalconUnwrapped}/opt/CrowdStrike/falconctl -s -f --cid="$CID_VALUE"
-                    ${customFalconUnwrapped}/opt/CrowdStrike/falconctl -g --cid
+                    ${customFalcon}/opt/CrowdStrike/falconctl -s --trace=${cfg.logLevel}
+                    ${customFalcon}/opt/CrowdStrike/falconctl -s -f --cid="$CID_VALUE"
+                    ${customFalcon}/opt/CrowdStrike/falconctl -g --cid
                   '')
               ];
               ExecStart = "/run/current-system/sw/bin/falcond";
